@@ -1,0 +1,85 @@
+{
+  "courses": [
+    {
+      "code": "GE1401",
+      "title": {
+        "zh": "学术英语写作（示例）",
+        "en": "Academic English Writing (sample)"
+      },
+      "area": "english",
+      "credits": 3,
+      "sections": [
+        {
+          "id": "L1",
+          "component": "Lecture",
+          "days": ["Mon"],
+          "start": "16:00",
+          "end": "17:50",
+          "dateRange": ["2027-01-11", "2027-04-24"]
+        },
+        {
+          "id": "T1",
+          "component": "Tutorial",
+          "days": ["Tue"],
+          "start": "16:00",
+          "end": "17:50",
+          "dateRange": ["2027-01-11", "2027-04-24"]
+        },
+        {
+          "id": "T2",
+          "component": "Tutorial",
+          "days": ["Tue"],
+          "start": "11:00",
+          "end": "12:50",
+          "dateRange": ["2027-01-11", "2027-04-24"]
+        }
+      ],
+      "bundles": [
+        {
+          "id": "L1+T1",
+          "label": "L1 (Lecture) + T1 (Tutorial)",
+          "sections": ["L1", "T1"]
+        },
+        {
+          "id": "L1+T2",
+          "label": "L1 (Lecture) + T2 (Tutorial)",
+          "sections": ["L1", "T2"]
+        }
+      ]
+    },
+    {
+      "code": "GE2101",
+      "title": {
+        "zh": "全球商业环境（示例）",
+        "en": "Global Business Environment (sample)"
+      },
+      "area": "area2",
+      "credits": 3,
+      "sections": [
+        {
+          "id": "L1",
+          "component": "Lecture",
+          "days": ["Mon", "Wed"],
+          "start": "11:00",
+          "end": "12:50",
+          "dateRange": ["2027-01-11", "2027-04-24"]
+        },
+        {
+          "id": "T1",
+          "component": "Tutorial",
+          "days": ["Thu"],
+          "start": "14:00",
+          "end": "14:50",
+          "dateRange": ["2027-01-11", "2027-04-24"]
+        }
+      ],
+      "bundles": [
+        {
+          "id": "L1+T1",
+          "label": "L1 (Lecture) + T1 (Tutorial)",
+          "sections": ["L1", "T1"]
+        }
+      ]
+    }
+  ]
+}

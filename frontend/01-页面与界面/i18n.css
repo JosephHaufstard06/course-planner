@@ -1,0 +1,96 @@
+/* ============================================================
+   语言切换控件 + 英文界面下的排版微调
+   （中文主体样式在 styles.css）
+   ============================================================ */
+
+.dot-sep { color: var(--ink-3); margin: 0 5px; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.lang-switch button {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.lang-switch button:hover { color: var(--ink); background: #EFEBE1; }
+
+.lang-switch button.is-active {
+  background: var(--ink);
+  color: #FFFDF9;
+}
+
+/* 英文：展开/收起用英文，星期列更宽，步骤条略宽 */
+html[lang="en"] .cand-detail[open] > summary .toggle-txt::after { content: "hide"; }
+html[lang="en"] .cand-detail:not([open]) > summary .toggle-txt::after { content: "details"; }
+html[lang="en"] .excluded[open] > summary .toggle-txt::after { content: "hide"; }
+html[lang="en"] .excluded:not([open]) > summary .toggle-txt::after { content: "see why"; }
+
+html[lang="en"] .tt-row b { min-width: 32px; }
+html[lang="en"] .step { min-width: 158px; }
+html[lang="en"] .mini-label,
+html[lang="en"] .cand-head { letter-spacing: .04em; }
+html[lang="en"] .notice { line-height: 1.65; }
+html[lang="en"] .cand-main .cell[data-label] {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+}
+
+html[lang="en"] .cand-main .cell[data-label] > * {
+  min-width: 0;
+}
+
+html[lang="en"] .cand-main .cell[data-label]::before {
+  content: attr(data-label);
+  font-size: 10.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  display: block;
+  line-height: 1.4;
+  padding-top: 2px;
+}
+html[lang="en"] .summary-row,
+html[lang="en"] .meta-row,
+html[lang="en"] .result-summary-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+  row-gap: 3px;
+}
+
+html[lang="en"] .summary-row .label,
+html[lang="en"] .meta-row .label,
+html[lang="en"] .result-summary-row .label {
+  min-width: 120px;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+html[lang="en"] .summary-row .value,
+html[lang="en"] .meta-row .value,
+html[lang="en"] .result-summary-row .value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

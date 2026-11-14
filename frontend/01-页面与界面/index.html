@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学生选课匹配助手 · 原型</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="i18n.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand-mark" id="brandMark" aria-hidden="true">选</div>
+      <div class="brand-text">
+        <h1 id="appTitle" data-i18n="app.title">学生选课匹配助手</h1>
+        <p class="brand-sub">
+          <span data-i18n="app.subtitle">CityUHK 本科生 GE 选课辅助</span>
+          <span class="dot-sep" aria-hidden="true">·</span>
+          <span class="tag-demo" data-i18n="app.demoTag">合成数据演示</span>
+        </p>
+      </div>
+    </div>
+    <div class="masthead-actions">
+      <span class="pill" data-i18n="app.term">2026/27 Sem B</span>
+      <span class="pill pill-warn" data-i18n="app.noCommit">不代为选课</span>
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
+        <button type="button" data-lang="zh">中文</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="resetBtn" type="button" data-i18n="app.reset">重置演示</button>
+    </div>
+  </header>
+
+  <nav class="stepper" id="stepper" aria-label="Steps"></nav>
+
+  <main class="stack">
+
+    <!-- ============ Step 1 ============ -->
+    <section class="panel" id="panel-1">
+      <div class="panel-head">
+        <h2><span class="sec-num">1</span><span data-i18n="s1.h">确认你的课表</span></h2>
+        <p class="hint" data-i18n="s1.hint">工具先读入你的已选课程，再由你修正并锁定。锁定后才用它做时间筛选——工具不读取学号或密码。</p>
+      </div>
+
+      <div class="notice" data-i18n="s1.notice">识别结果可能有误：请逐条核对课程代码、班别与时间。</div>
+
+      <div id="scheduleList" class="schedule-list"></div>
+
+      <div class="add-entry">
+        <div class="add-entry-head">
+          <span class="mini-label" data-i18n="s1.addTitle">补充一门已选课程</span>
+        </div>
+        <div class="add-entry-grid">
+          <label class="field">
+            <span data-i18n="s1.f.code">课程代码</span>
+            <input class="inp" id="entryCode" type="text" data-i18n-ph="s1.ph.code" placeholder="例如 GE1401" autocomplete="off">
+          </label>
+          <label class="field">
+            <span data-i18n="s1.f.title">课程名称</span>
+            <input class="inp" id="entryTitle" type="text" data-i18n-ph="s1.ph.title" placeholder="可留空" autocomplete="off">
+          </label>
+          <label class="field">
+            <span data-i18n="s1.f.component">组成部分</span>
+            <select class="inp" id="entryComponent">
+              <option>Lecture</option>
+              <option>Tutorial</option>
+              <option>Lab</option>
+              <option>Activity</option>
+            </select>
+          </label>
+          <label class="field">
+            <span data-i18n="s1.f.start">开始</span>
+            <input class="inp" id="entryStart" type="time" value="13:00">
+          </label>
+          <label class="field">
+            <span data-i18n="s1.f.end">结束</span>
+            <input class="inp" id="entryEnd" type="time" value="14:50">
+          </label>
+        </div>
+        <div class="add-entry-foot">
+          <div class="chipgroup" id="entryDays"></div>
+          <button class="btn btn-secondary btn-sm" id="addEntryBtn" type="button" data-i18n="s1.add">添加</button>
+        </div>
+      </div>
+
+      <div class="panel-foot">
+        <p class="foot-note" id="lockHint"></p>
+        <span class="foot-actions">
+          <button class="btn btn-ghost" id="unlockBtn" type="button" data-i18n="s1.unlock" hidden>解锁修改</button>
+          <button class="btn btn-primary" id="lockBtn" type="button" data-i18n="s1.lock">锁定课表，进入下一步</button>
+        </span>
+      </div>
+    </section>
+
+    <!-- ============ Step 2 ============ -->
+    <section class="panel" id="panel-2" hidden>
+      <div class="panel-head">
+        <h2><span class="sec-num">2</span><span data-i18n="s2.h">剩余要求与时间偏好</span></h2>
+        <p class="hint" data-i18n="s2.hint">这里只记录你明确知道的信息。</p>
+      </div>
+
+      <div class="grid-2">
+        <fieldset class="field-card">
+          <legend data-i18n="s2.areas">目标 GE 范畴</legend>
+          <div class="chipgroup" id="areaChips"></div>
+          <p class="hint" data-i18n="s2.areasHint">全部取消勾选＝不限范畴。</p>
+        </fieldset>
+
+        <fieldset class="field-card">
+          <legend data-i18n="s2.credits">学分</legend>
+          <div class="field-row">
+            <label class="field">
+              <span data-i18n="s2.planned">本学期拟增加</span>
+              <input class="inp" id="plannedCredits" type="number" min="0" max="30" step="3">
+            </label>
+            <label class="field">
+              <span data-i18n="s2.max">本学期上限</span>
+              <input class="inp" id="maxCredits" type="number" min="0" max="30" step="3">
+            </label>
+          </div>
+          <p class="hint" data-i18n="s2.creditsHint">上限按你与学院确认的数额填写。</p>
+        </fieldset>
+
+        <fieldset class="field-card">
+          <legend data-i18n="s2.taken">已修课程代码</legend>
+          <textarea class="inp" id="takenCodes" rows="2" spellcheck="false" data-i18n-ph="s2.takenPh" placeholder="用逗号分隔，例如 GE2100, MA1508"></textarea>
+          <p class="hint" data-i18n="s2.takenHint">只用于判断互斥与「该类别是否已修过」。</p>
+        </fieldset>
+
+        <fieldset class="field-card">
+          <legend data-i18n="s2.unavail">不可用时段</legend>
+          <div id="unavailList" class="unavail-list"></div>
+          <button class="btn btn-ghost btn-sm" id="addUnavailBtn" type="button" data-i18n="s2.unavailAdd">+ 添加时段</button>
+          <p class="hint" data-i18n="s2.unavailHint">与这些时段冲突的课会直接排除。</p>
+        </fieldset>
+
+        <fieldset class="field-card">
+          <legend data-i18n="s2.prefs">排序与缓冲</legend>
+          <label class="field">
+            <span data-i18n="s2.sortBy">排序偏好</span>
+            <select class="inp" id="sortBy">
+              <option value="days" data-i18n="s2.sort.days">尽量少到校天数</option>
+              <option value="gap" data-i18n="s2.sort.gap">尽量少课间空档</option>
+              <option value="area" data-i18n="s2.sort.area">优先补未修的 GE 范畴</option>
+            </select>
+          </label>
+          <label class="field">
+            <span data-i18n="s2.buffer">课间缓冲（分钟）</span>
+            <input class="inp" id="bufferMin" type="number" min="0" max="60" step="5">
+          </label>
+          <p class="hint" data-i18n="s2.bufferHint">两节课间隔低于此值时标「待核实」。</p>
+          <label class="check-row"><input type="checkbox" id="strictOnly"> <span data-i18n="s2.strict">只显示已知条件符合的课程（隐藏待核实项）</span></label>
+        </fieldset>
+      </div>
+
+      <div class="panel-foot">
+        <p class="foot-note" data-i18n="s2.foot">候选结果分三类：已知条件符合 / 仍有条件待核实 / 明确不符合。</p>
+        <button class="btn btn-primary" id="genBtn" type="button" data-i18n="s2.gen">生成候选课程</button>
+      </div>
+    </section>
+
+    <!-- ============ Step 3 ============ -->
+    <section class="panel" id="panel-3" hidden>
+      <div class="panel-head">
+        <h2><span class="sec-num">3</span><span data-i18n="s3.h">候选课程</span></h2>
+        <p class="hint" data-i18n="s3.hint">每一行表示「把这一门单独加进你已锁定的课表」的结果。</p>
+      </div>
+
+      <div id="resultSummary" class="summary"></div>
+      <div id="candidateWrap"></div>
+      <div id="excludedWrap"></div>
+      <div id="comboWrap"></div>
+
+      <div class="panel-foot">
+        <p class="foot-note" id="step3Note"></p>
+        <button class="btn btn-primary" id="toStep4" type="button" data-i18n="s3.toStep4">查看核实清单</button>
+      </div>
+    </section>
+
+    <!-- ============ Step 4 ============ -->
+    <section class="panel" id="panel-4" hidden>
+      <div class="panel-head">
+        <h2><span class="sec-num">4</span><span data-i18n="s4.h">去官方系统核实</span></h2>
+        <p class="hint" data-i18n="s4.hint">工具到这里就结束了。</p>
+      </div>
+      <div id="finalWrap"></div>
+    </section>
+
+  </main>
+
+  <footer class="page-foot">
+    <p data-i18n="app.footer1">原型 v0.1 · 数据为合成示例</p>
+    <p data-i18n="app.footer2">保留学生自主权：所有推荐都可点开查看依据与资料来源。</p>
+  </footer>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- 依赖顺序：文案 → 数据 → 逻辑 → 界面 -->
+<script src="../04-文案字典/i18n.js"></script>
+<script src="../03-示例数据/data.js"></script>
+<script src="../02-核心逻辑/logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
